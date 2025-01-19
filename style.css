@@ -79,6 +79,9 @@ table th {
     margin-top: 20px;
     font-size: 18px;
     color: #333;
+    max-height: 600px;
+    overflow: auto;
+    width: 800px;
 }
 
 footer {
