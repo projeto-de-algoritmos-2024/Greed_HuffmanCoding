@@ -86,7 +86,7 @@ function generateHuffmanCodes(tree, prefix = '', codes = {}) {
 }
 
 function encodeText(text, huffmanCodes) {
-    return text.split('').map(char => huffmanCodes[char]).join(' ');
+    return text.split('').map(char => huffmanCodes[char]).join('');
 }
 
 function calculateCompressedSize(huffmanResult) {
