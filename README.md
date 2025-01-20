@@ -14,7 +14,7 @@ Este projeto tem como objetivo criar um site conversos de texto para Huffman Cod
 
 ## Screenshots
 
-![capture1](https://i.ibb.co/Kbbpwvj/Capture1.png)
+![capture1](https://i.ibb.co/61QFQzs/Captura-de-tela-2025-01-19-151833.png)
 
 ---
 

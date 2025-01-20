@@ -22,8 +22,16 @@ compressButton.addEventListener('click', () => {
     compressedResult.innerHTML = `
         <p>Tamanho após compressão: ${compressedSizeInBits} bits</p>
         <p>Texto convertido: ${huffmanResult.encodedText}</p>
+
     `;
 
+    let tableHTML = '<table><tr><th>Caractere</th><th>Código</th></tr>';
+    for (const char in huffmanResult.huffmanCodes) {
+        tableHTML += `<tr><td>${char}</td><td>${huffmanResult.huffmanCodes[char]}</td></tr>`;
+    }
+    tableHTML += '</table>';
+
+    compressedResult.innerHTML += tableHTML;
     openHuffmanTreeInNewTab(huffmanResult.huffmanTree);
 });
 
