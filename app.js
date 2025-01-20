@@ -86,8 +86,108 @@ function calculateCompressedSize(huffmanResult) {
     return encodedText.length;
 }
 
+function generateTreeHTML(node, level = 0, nodeId = 'root') {
+    if (!node) return '';
+
+    const currentId = `${nodeId}-${level}`;
+    let html = `<div class="huffman-node-container" id="${currentId}">`;
+    html += `<div class="huffman-node">`;
+
+    if (node.char.length === 1) {
+        html += `${node.char}<br>(${node.freq})`;
+    } else {
+        html += `(${node.freq})`;
+    }
+
+    html += `</div>`;
+
+    if (node.left || node.right) {
+        html += `<div class="huffman-children">`;
+        html += generateTreeHTML(node.left, level + 1, `${currentId}-left`);
+        html += generateTreeHTML(node.right, level + 1, `${currentId}-right`);
+        html += `</div>`;
+    }
+
+    html += `</div>`;
+    return html;
+}
+
+function drawConnections(tree) {
+    const svgLines = [];
+    const nodes = document.querySelectorAll('.huffman-node-container');
+
+    nodes.forEach(node => {
+        const parentId = node.id;
+        const parentElement = document.getElementById(parentId);
+        const parentNode = parentElement?.querySelector('.huffman-node');
+
+        const children = parentElement?.querySelector('.huffman-children')?.children;
+
+        if (children) {
+            Array.from(children).forEach(child => {
+                const childNode = child.querySelector('.huffman-node');
+                if (childNode) {
+                    const parentRect = parentNode.getBoundingClientRect();
+                    const childRect = childNode.getBoundingClientRect();
+
+                    const x1 = parentRect.left + parentRect.width / 2;
+                    const y1 = parentRect.top + parentRect.height;
+                    const x2 = childRect.left + childRect.width / 2;
+                    const y2 = childRect.top;
+
+                    svgLines.push(`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="black" stroke-width="2"/>`);
+                }
+            });
+        }
+    });
+
+    const svg = `<svg class="huffman-connections">${svgLines.join('')}</svg>`;
+    document.body.insertAdjacentHTML('afterbegin', svg);
+}
+
+const css = `
+    .huffman-node-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+    }
+
+    .huffman-node {
+        border: 1px solid black;
+        display: inline-block;
+        margin: 5px;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+        background-color: #f8f9fa;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        line-height: 40px;
+        position: relative;
+        z-index: 2;
+    }
+
+    .huffman-children {
+        display: flex;
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    .huffman-connections {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        pointer-events: none;
+    }
+`;
+
 function openHuffmanTreeInNewTab(tree) {
-    const newWindow = window.open('', '_blank'); 
+    const newWindow = window.open('', '_blank');
 
     if (!newWindow) {
         alert('Por favor, permita pop-ups no seu navegador para visualizar a árvore.');
@@ -95,6 +195,7 @@ function openHuffmanTreeInNewTab(tree) {
     }
 
     const treeHTML = generateTreeHTML(tree);
+
     newWindow.document.write(`
         <!DOCTYPE html>
         <html lang="en">
@@ -112,59 +213,19 @@ function openHuffmanTreeInNewTab(tree) {
                     flex-direction: column;
                     align-items: center;
                 }
-                .huffman-node {
-                    border: 1px solid black;
-                    display: inline-block;
-                    margin: 10px;
-                    padding: 10px;
-                    text-align: center;
-                    font-size: 14px;
-                    background-color: #f8f9fa;
-                    border-radius: 50%; /* Torna os nós circulares */
-                    width: 60px;
-                    height: 60px;
-                    line-height: 40px;
-                }
-                .huffman-children {
-                    display: flex;
-                    justify-content: center;
-                    align-items: flex-start;
-                    flex-wrap: wrap;
-                    margin-top: 20px;
-                }
+                ${css}
             </style>
         </head>
         <body>
             <h1>Árvore de Huffman</h1>
             ${treeHTML}
+            <script>
+                (${drawConnections.toString()})();
+            </script>
         </body>
         </html>
     `);
 
-    newWindow.document.close(); 
+    newWindow.document.close();
 }
 
-function generateTreeHTML(node) {
-    if (!node) return '';
-
-    // Gera o HTML do nó atual
-    let html = `<div class="huffman-node">`;
-    if (node.char.length === 1) {
-        // Nó folha: exibe o caractere e a frequência
-        html += `${node.char}<br>(${node.freq})`;
-    } else {
-        // Nó intermediário: exibe apenas a frequência
-        html += `(${node.freq})`;
-    }
-    html += `</div>`;
-
-    // Adiciona os filhos do nó atual
-    if (node.left || node.right) {
-        html += `<div class="huffman-children">`;
-        html += generateTreeHTML(node.left);
-        html += generateTreeHTML(node.right);
-        html += `</div>`;
-    }
-
-    return html;
-}

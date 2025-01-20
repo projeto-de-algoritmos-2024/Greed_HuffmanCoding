@@ -18,7 +18,7 @@ Este projeto tem como objetivo criar um site conversos de texto para Huffman Cod
 
 ---
 
-![capture2](https://i.ibb.co/VBmSbqP/Capture2.png)
+![capture2](https://i.ibb.co/YpdtFVd/Capture3.png)
 
 ## Instalação 
 **Linguagem(s)**: HTML5, CSS3, Javascript<br>
