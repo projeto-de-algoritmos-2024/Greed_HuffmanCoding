@@ -25,7 +25,7 @@ Este projeto tem como objetivo criar um site conversos de texto para Huffman Cod
 
 ## Uso 
 
-Acesse aqui: [link]()
+Acesse aqui: [link](https://projeto-de-algoritmos-2024.github.io/Greed_HuffmanCoding/)
 
 ### Uso local
 

@@ -22,7 +22,6 @@ compressButton.addEventListener('click', () => {
     compressedResult.innerHTML = `
         <p>Tamanho após compressão: ${compressedSizeInBits} bits</p>
         <p>Texto convertido: ${huffmanResult.encodedText}</p>
-
     `;
 
     let tableHTML = '<table><tr><th>Caractere</th><th>Código</th></tr>';
@@ -32,6 +31,18 @@ compressButton.addEventListener('click', () => {
     tableHTML += '</table>';
 
     compressedResult.innerHTML += tableHTML;
+
+    const decompressedText = decompressText(huffmanResult.encodedText, huffmanResult.huffmanCodes);
+    compressedResult.innerHTML += `
+        <p><strong>Texto descomprimido:</strong> ${decompressedText}</p>
+    `;
+
+    if (decompressedText === text) {
+        compressedResult.innerHTML += '<p style="color: green;">A descompressão foi bem-sucedida!</p>';
+    } else {
+        compressedResult.innerHTML += '<p style="color: red;">A descompressão falhou!</p>';
+    }
+
     openHuffmanTreeInNewTab(huffmanResult.huffmanTree);
 });
 
@@ -236,4 +247,27 @@ function openHuffmanTreeInNewTab(tree) {
 
     newWindow.document.close();
 }
+
+function decompressText(encodedText, huffmanCodes) {
+    const reverseCodes = Object.entries(huffmanCodes).reduce((acc, [char, code]) => {
+        acc[code] = char;
+        return acc;
+    }, {});
+
+    let currentCode = '';
+    let decodedText = '';
+
+    for (const bit of encodedText) {
+        currentCode += bit;
+
+        if (reverseCodes[currentCode]) {
+            decodedText += reverseCodes[currentCode];
+            currentCode = '';
+        }
+    }
+
+    return decodedText;
+}
+
+
 
