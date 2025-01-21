@@ -12,6 +12,10 @@
 ## Sobre 
 Este projeto tem como objetivo criar um site conversos de texto para Huffman Code, o objetivo é receber um texto como input, fazer a conversão, mostrar o tamanho de bits atual, seu tamanho após a conversão, o texto convertido e por fim, gerar a árvore de conversão
 
+## Vídeo
+
+[link video](https://youtu.be/UPnUlRa6i-U)
+
 ## Screenshots
 
 ![capture1](https://i.ibb.co/61QFQzs/Captura-de-tela-2025-01-19-151833.png)
